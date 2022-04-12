@@ -7,9 +7,9 @@ use Illuminate\Support\Facades\Date;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithHeadings;
-use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 
-class PemeriksaanExport implements FromQuery, WithHeadings, WithMapping
+class PemeriksaanExport implements FromQuery, WithHeadings, WithMapping, ShouldAutoSize
 {
     /**
     * @return \Illuminate\Support\Collection
@@ -32,7 +32,6 @@ class PemeriksaanExport implements FromQuery, WithHeadings, WithMapping
     public function headings(): array
     {
         return [
-            '#',
             'Tanggal Pemeriksaan',
             'Nama Pasien',
             'Penyakit',
@@ -43,14 +42,14 @@ class PemeriksaanExport implements FromQuery, WithHeadings, WithMapping
 
     public function map($pemeriksaan): array
     {
+        $selesai = strtotime($pemeriksaan->waktu_selesai);
+        $newformat = date('d-m-Y H:i:s',$selesai);
         return [
-            $pemeriksaan->invoice_number,
-            $pemeriksaan->pasien->nama,
-            $pemeriksaan->penyakit->nama,
-            $pemeriksaan->mulai,
-            $pemeriksaan->selesai,
-            Date::dateTimeToExcel($pemeriksaan->created_at),
-            Date::dateTimeToExcel($pemeriksaan->updated_at),
+            $pemeriksaan->created_at->format('d-m-Y'),
+            $pemeriksaan->pasien->first()->nama,
+            $pemeriksaan->penyakit->first()->nama,
+            $pemeriksaan->created_at->format('d-m-Y H:i:s'),
+            $newformat
         ];
     }
 }
