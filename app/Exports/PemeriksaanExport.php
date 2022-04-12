@@ -46,8 +46,8 @@ class PemeriksaanExport implements FromQuery, WithHeadings, WithMapping, ShouldA
         $newformat = date('d-m-Y H:i:s',$selesai);
         return [
             $pemeriksaan->created_at->format('d-m-Y'),
-            $pemeriksaan->pasien->first()->nama,
-            $pemeriksaan->penyakit->first()->nama,
+            $pemeriksaan->pasien->nama,
+            $pemeriksaan->penyakit->nama,
             $pemeriksaan->created_at->format('d-m-Y H:i:s'),
             $newformat
         ];
