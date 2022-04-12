@@ -9,7 +9,7 @@
             <div class="card">
                 <div class="card-header">
                     <button type="button" class="btn btn-success float-right" data-toggle="modal"
-                    data-target="#export">
+                    data-target="#export"> <i class="fas fa-file-export mr-2"></i>
                     Export Data
                  </button>
                     <button type="button" class="btn btn-primary float-right mr-2" data-toggle="modal"
