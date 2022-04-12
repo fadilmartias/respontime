@@ -41,7 +41,7 @@
                                     <td>{{ $item->pasien->nama }}</td>
                                     <td>{{ $item->penyakit->nama }}</td>
                                     <td>{{ $item->status }}</td>
-                                    <td>{{ $item->created_at->format('h:i:s') }}</td>
+                                    <td>{{ $item->created_at->format('H:i:s') }}</td>
                                     <td>{{ !is_null($item->waktu_selesai) ? date('H:i:s', strtotime($item->waktu_selesai)) : '' }}</td>
                                     <td>
                                         <div class="d-flex">
@@ -145,13 +145,23 @@
                         <div class="col-6">
                             <div class="form-group">
                                 <label for="pasien">Mulai dari :</label>
-                                <input type="date" class="form-control" id="tglMulai" name="tglMulai">
+                                <input type="date" class="form-control @error('tglMulai') is-invalid @enderror" id="tglMulai" name="tglMulai" value="{{ old('tglMulai') }}" required>
+                                @error('tglMulai')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                                @enderror
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="form-group">
                                 <label for="pasien">Hingga :</label>
-                                <input type="date" class="form-control" id="tglSelesai" name="tglSelesai">
+                                <input type="date" class="form-control @error('tglSelesai') is-invalid @enderror" id="tglSelesai"  name="tglSelesai" value="{{ old('tglSelesai') }}" required>
+                                @error('tglSelesai')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                                @enderror
                             </div>
                         </div>
                     </div>
