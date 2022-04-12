@@ -71,8 +71,17 @@ class PemeriksaanController extends Controller
 
     public function export(Request $request)
     {
-        $startDate = Carbon::createFromFormat('d/m/Y', $request->tglMulai);
-        $endDate = Carbon::createFromFormat('d/m/Y', $request->tglSelesai);
+        $request->validate([
+            'tglMulai' => 'required|date',
+            'tglSelesai' => 'required|date|after_or_equal:tglMulai',
+        ],
+        [
+            'tglSelesai.after_or_equal' => 'Tanggal tidak boleh mundur',
+        ]);
+
+        $startDate = $request->tglMulai;
+        $endDate = $request->tglSelesai;
+        // $pemeriksaan = Pemeriksaan::whereBetween('created_at', [$startDate, $endDate])->get();
 
         return Excel::download(new PemeriksaanExport($startDate, $endDate), 'pemeriksaan.xlsx');
     }
