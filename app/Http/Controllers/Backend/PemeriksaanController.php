@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Backend;
 
-use App\Http\Controllers\Controller;
-use App\Models\Pasien;
-use App\Models\Pemeriksaan;
-use App\Models\Penyakit;
 use Carbon\Carbon;
+use App\Models\Pasien;
+use App\Models\Penyakit;
+use App\Models\Pemeriksaan;
 use Illuminate\Http\Request;
+use App\Exports\PemeriksaanExport;
+use App\Http\Controllers\Controller;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PemeriksaanController extends Controller
 {
@@ -65,5 +67,13 @@ class PemeriksaanController extends Controller
         $data->delete();
 
         return redirect()->back();
+    }
+
+    public function export(Request $request)
+    {
+        $startDate = Carbon::createFromFormat('d/m/Y', $request->tglMulai);
+        $endDate = Carbon::createFromFormat('d/m/Y', $request->tglSelesai);
+
+        return Excel::download(new PemeriksaanExport($startDate, $endDate), 'pemeriksaan.xlsx');
     }
 }

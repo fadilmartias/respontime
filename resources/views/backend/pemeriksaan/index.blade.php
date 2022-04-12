@@ -8,10 +8,15 @@
 
             <div class="card">
                 <div class="card-header">
-                    <button type="button" class="btn btn-primary float-right" data-toggle="modal"
+                    <button type="button" class="btn btn-success float-right" data-toggle="modal"
+                    data-target="#export">
+                    Export Data
+                 </button>
+                    <button type="button" class="btn btn-primary float-right mr-2" data-toggle="modal"
                         data-target="#tambahPemeriksaan">
                         + Tambah Pemeriksaan
                     </button>
+
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
@@ -37,7 +42,7 @@
                                     <td>{{ $item->penyakit->nama }}</td>
                                     <td>{{ $item->status }}</td>
                                     <td>{{ $item->created_at->format('h:i:s') }}</td>
-                                    <td>{{ !is_null($item->waktu_selesai) ? date('h:i:s', strtotime($item->waktu_selesai)) : '' }}</td>
+                                    <td>{{ !is_null($item->waktu_selesai) ? date('H:i:s', strtotime($item->waktu_selesai)) : '' }}</td>
                                     <td>
                                         <div class="d-flex">
                                             @if (!$item->waktu_selesai)
@@ -122,6 +127,43 @@
             </div>
         </div>
     </div>
+
+<!-- Modal Create -->
+<div class="modal fade" id="export" tabindex="-1" aria-labelledby="exportLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exportLabel">Export Data</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="{{ route('pemeriksaan.export') }}" method="POST">
+                <div class="modal-body">
+                    @csrf
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="pasien">Mulai dari :</label>
+                                <input type="date" class="form-control" id="tglMulai" name="tglMulai">
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="pasien">Hingga :</label>
+                                <input type="date" class="form-control" id="tglSelesai" name="tglSelesai">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Export</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 @endsection
 
 @push('style')

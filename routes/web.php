@@ -17,6 +17,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
 
     Route::resource('pemeriksaan', PemeriksaanController::class);
+    Route::post('pemeriksaan/export', [PemeriksaanController::class, 'export'])->name('pemeriksaan.export');
 
     Route::group(['middleware' => ['role:Admin']], function() {
         Route::name('penyakit.')->group(function ()
